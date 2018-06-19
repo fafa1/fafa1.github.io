@@ -1,110 +1,51 @@
-<!DOCTYPE>
-    <meta charset="utf-8">
-    <style>
+<!DOCTYPE html>
+<html lang="en">
 
-    body {
-    width: 960px;
-    margin: auto;
-    font-family: Arial;
-    }
-    #target {
-    margin: 40px 0;
-    }
-    .chart {
-    margin-bottom: 40px;
-    }
-    .star-title {
-    font-size: 14px;
-    }
-    .star-label {
-    font-size: 11px;
-    }
-    .star-origin {
-    fill: #333;
-    }
-    .star-axis {
-    stroke: #ccc;
-    stroke-width: 2px;
-    stroke-dasharray: 4 5;
-    }
-    .star-path {
-    stroke: #444;
-    stroke-width: 2px;
-    fill: #709CB1;
-    fill-opacity: 0.6;
-    }
-    </style>
+    <head>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="d3-starPlot.js"></script>
+        <script src="index.js"></script>
+        <link rel="stylesheet" href="d3-css.css">
+        <link rel="stylesheet" href="index.css">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Visualização</title>
+    </head>
 
     <body>
-        <script src="http://d3js.org/d3.v3.min.js"></script>
-        <script src="d3-starPlot.js"></script>
-        <script>
+        <div id='target'>
+            <div class="app app--fixed-header">
+                <header class="header header--fixed">
+                    <h1 class="header__title">
+                        Visualização de Dados na Saúde
+                        <span class="header__sub-title">v-1</span>
+                    </h1>
+                    <nav class="nav">
+                        <ul class="nav-list">
+                            <li class="nav-list__item">
+                                <a href="http://localhost:3000">Radar</a>
+                            </li>
+                            <button onclick="myFunction(0)">Janeiro</button>
+                            <button onclick="myFunction(1)">Fevereiro</button>
+                            <button onclick="myFunction(2)">Marco</button>
+                            <button onclick="myFunction(3)">Abril</button>
+                            <button onclick="myFunction(4)">Maio</button>
+                            <button onclick="myFunction(5)">Junho</button>
+                            <button onclick="myFunction(6)">Julho</button>
+                            <button onclick="myFunction(7)">Agosto</button>
+                            <button onclick="myFunction(8)">Stembro</button>
+                            <button onclick="myFunction(9)">Outubro</button>
+                            <button onclick="myFunction(10)">Novembro</button>
 
-        var margin = {
-        top: 36,
-        right: 50,
-        bottom: 20,
-        left: 50
-        };
-        var width = 260 - margin.left - margin.right;
-        var height = 260 - margin.top - margin.bottom;
-        var labelMargin = 20;
-
-        var scale = d3.scale.linear()
-        .domain([0, 1.4])
-        .range([0, 100])
-
-        d3.csv('data.csv')
-        .row(function(d) {
-            d.behavior = +d.Behavior
-            d.socialCircumstances = +d.SocialCircumstances
-            d.geneticsBiology = +d.GeneticsBiology
-            d.medicalCare = +d.MedicalCare
-            d.healthLiteracy = +d.HealthLiteracy
-            d.access = +d.Access
-            d.environment = +d.Environment
-
-            return d;
-        })
-        .get(function(error, rows) {
-            let star = d3.starPlot()
-            .width(width)
-            .accessors([
-                function(d) { return scale(d.behavior); },
-                function(d) { return scale(d.socialCircumstances); },
-                function(d) { return scale(d.geneticsBiology); },
-                function(d) { return scale(d.medicalCare); },
-                function(d) { return scale(d.healthLiteracy); },
-                function(d) { return scale(d.access); },
-                function(d) { return scale(d.environment); }                   
-            ])
-            .labels([
-                'Behavior',
-                'Social Circumstances',
-                'Genetics/Biology',
-                'Medical Care',
-                'Health Literacy',
-                'Access',
-                'Environment'
-                               
-            ])
-            .title(function(d) { return d.Distillery; })
-            .margin(margin)
-            .labelMargin(labelMargin)
-
-            rows.forEach(function(d, i) {
-            star.includeLabels(i % 1 === 0 ? true : false);
-
-            d3.select('#target').append('svg')
-                .attr('class', 'chart')
-                .attr('width', width + margin.left + margin.right)
-                .attr('height', width + margin.top + margin.bottom)
-                .append('g')
-                .datum(d)
-                .call(star)
-            });
-        });
-
-        </script>
-        <div id='target'></div>
-</body>
+                            <!-- <li className="nav-list__item"> <a href="https://github.com/fafa1"></a>
+                            </li> -->
+                        </ul>
+                    </nav>
+                </header>
+            </div>
+            <div id='target2'></div>
+        </div>
+    </body>
+</html>
