@@ -12,7 +12,7 @@ var scale = d3.scale.linear()
   .domain([0, 1.6])
   .range([0, 100])
 
-d3.csv('whiskies.csv')
+d3.csv('saude.csv')
   .row(function (d) {
     d.Behavior = +d.Behavior;
     d.SocialCircumstances = +d.SocialCircumstances;
@@ -46,28 +46,25 @@ d3.csv('whiskies.csv')
         'Environment'
       ])
 
-
-      .title(d => d.Mes)// responsavel pelo título
+      //.title(d => d.Mes)// responsavel pelo título
       .margin(margin)
       .labelMargin(labelMargin)
 
-    rows.forEach(function (d, i) {
+      rows.forEach(function (d, i) {
       star.includeLabels(i % 3 === 0 ? true : false);
 
       var wrapper = d3.select('#target').append('span')
-        .attr('class', "wrapper0" /* + d.Mes */)
-
+        .attr('class', "wrapper" /* + d.Mes */)
+      
       d3.selectAll("span")
         .attr('class', function (d, i) {
-          console.log(i)
           return (i % 2 === 0 ? "pt" + i : "pt" + i)
-        })
-
+        }) 
 
       /* Responsavel por cada modulo do grafico ; janeiro,   fevereiro  */
-      d3.selectAll("p").style("color", function (d, i) {
+      /* d3.selectAll("p").style("color", function (d, i) {
         return i % 2 ? "#fff" : "#eee";
-      });
+      }); */
       var svg = wrapper.append('svg')
         .attr('class', 'chart')
         .attr('width', width + margin.left + margin.right)
@@ -119,13 +116,9 @@ d3.csv('whiskies.csv')
     });
   });
 
-function myFunction(c) {
+  // style display é diferente de block (é none)
+  function myFunction(c) {
   let x = document.getElementsByClassName("chart")
-  if (x[c].style.display === 'none') {
-    x[c].style.display = 'block'
-  } else {
-    x[c].style.display = 'none'
-  }
+  x[c].style.display = (x[c].style.display === 'block') ? 'none' : 'block' 
+    
 }
-
-   /*  function myFunction2() {[...myFunction1()]} */

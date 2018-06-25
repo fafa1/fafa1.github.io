@@ -7,12 +7,11 @@ body {
 }
 
 #target {
-    margin: 30px;
+    margin: 30px;    
 }
 
-.wrapper0 {
-    position: absolute;
-    display: inline-block;
+#target2 {
+    margin: 30px;
 }
 
 .pt0 {
@@ -44,8 +43,29 @@ body {
     position: absolute;
     display: inline-block;
 }
+.pt7 {
+    position: absolute;
+    display: inline-block;
+}
+.pt8 {
+    position: absolute;
+    display: inline-block;
+}
+.pt9 {
+    position: absolute;
+    display: inline-block;
+}
+.pt10 {
+    position: absolute;
+    display: inline-block;
+}
+.pt11 {
+    position: absolute;
+    display: inline-block;
+}
 .chart {
     margin-bottom: 10px;
+    display: none;
 }
 
 .star-title {
@@ -94,7 +114,7 @@ body {
 .pt4 .chart .star-path {
     stroke-width: 1px;
     fill: rgb(229, 236, 121);
-    fill-opacity: 0.4;
+    fill-opacity: 0.6;
 }
 .pt5 .chart .star-path {
     stroke-width: 1px;

@@ -1,51 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE>
+<meta charset="utf-8">
 
-    <head>
-        <script src="http://d3js.org/d3.v3.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
-        <script src="d3-starPlot.js"></script>
-        <script src="index.js"></script>
-        <link rel="stylesheet" href="d3-css.css">
-        <link rel="stylesheet" href="index.css">
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Visualização</title>
-    </head>
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script> -->
+<link rel="stylesheet" href="index.css">
+<link rel="stylesheet" href="">
+<script src="d3-starPlot.js"></script>
+<script src="index.js"></script>
 
-    <body>
-        <div id='target'>
-            <div class="app app--fixed-header">
-                <header class="header header--fixed">
-                    <h1 class="header__title">
-                        Visualização de Dados na Saúde
-                        <span class="header__sub-title">v-1</span>
-                    </h1>
-                    <nav class="nav">
-                        <ul class="nav-list">
-                            <li class="nav-list__item">
-                                <a href="http://localhost:3000">Radar</a>
-                            </li>
-                            <button onclick="myFunction(0)">Janeiro</button>
-                            <button onclick="myFunction(1)">Fevereiro</button>
-                            <button onclick="myFunction(2)">Marco</button>
-                            <button onclick="myFunction(3)">Abril</button>
-                            <button onclick="myFunction(4)">Maio</button>
-                            <button onclick="myFunction(5)">Junho</button>
-                            <button onclick="myFunction(6)">Julho</button>
-                            <button onclick="myFunction(7)">Agosto</button>
-                            <button onclick="myFunction(8)">Stembro</button>
-                            <button onclick="myFunction(9)">Outubro</button>
-                            <button onclick="myFunction(10)">Novembro</button>
+  <div id='target'> 
+    <div class="app app--fixed-header">
+        <header class="header header--fixed">
+            <h1 class="header__title">
+                Visualização de Dados na Saúde
+                <span class="header__sub-title">v-1</span>
+            </h1>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li class="nav-list__item">
+                        <a href="http://localhost:3000">Radar</a>
+                    </li>
+                    
+                    <!-- <li className="nav-list__item"> <a href="https://github.com/fafa1"></a>
+                    </li> -->
+                </ul>
+                <button onclick="myFunction(0)">Janeiro</button>
+                    <button onclick="myFunction(1)">Fevereiro</button>
+                    <button onclick="myFunction(2)">Marco</button>
+                    <button onclick="myFunction(3)">Abril</button>
+                    <button onclick="myFunction(4)">Maio</button>
+                    <button onclick="myFunction(5)">Junho</button>
+                    <button onclick="myFunction(6)">Julho</button>
+                    <button onclick="myFunction(7)">Agosto</button>
+                    <button onclick="myFunction(8)">Stembro</button>
+                    <button onclick="myFunction(9)">Outubro</button>
+                    <button onclick="myFunction(10)">Novembro</button>
+                    <button onclick="myFunction(11)">Dezembro</button>
 
-                            <!-- <li className="nav-list__item"> <a href="https://github.com/fafa1"></a>
-                            </li> -->
-                        </ul>
-                    </nav>
-                </header>
-            </div>
-            <div id='target2'></div>
-        </div>
-    </body>
-</html>
+            </nav>
+        </header>
+      </div>
+     
+  </div>
+  <div id='target2'>
+    <h3>Clique nos Meses para Mostrar os Gráficos</h3>
+  </div>
+</body>
