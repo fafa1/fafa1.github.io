@@ -1,124 +1,128 @@
-var margin = {
-  top: 90,
-  right: 50,
-  bottom: 80,
-  left: 50
-};
-var width = 350 - margin.left - margin.right;
-var height = 350 - margin.top - margin.bottom;
-var labelMargin = 7;
+var margin = {top: 30, right: 10, bottom: 10, left: 10},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
 
-var scale = d3.scale.linear()
-  .domain([0, 1.6])
-  .range([0, 100])
+var x = d3.scale.ordinal().rangePoints([0, width], 1),
+    y = {},
+    dragging = {};
 
-d3.csv('saude.csv')
-  .row(function (d) {
-    d.Behavior = +d.Behavior;
-    d.SocialCircumstances = +d.SocialCircumstances;
-    d.GeneticsBiology = +d.GeneticsBiology;
-    d.MedicalCare = +d.MedicalCare;
-    d.HealthLiteracy = +d.HealthLiteracy;
-    d.Access = +d.Access;
-    d.Environment = +d.Environment;
-    return d;
-  })
-  .get(function (error, rows) {
-    var star = d3.starPlot()
-      .width(width)
-      .properties([
-        'Behavior',
-        'SocialCircumstances',
-        'GeneticsBiology',
-        'MedicalCare',
-        'HealthLiteracy',
-        'Access',
-        'Environment'
-      ])
-      .scales(scale)
-      .labels([
-        'Behavior',
-        'Social Circumstances',
-        'Genetics/Biology',
-        'Medical Care',
-        'Health Literacy',
-        'Access',
-        'Environment'
-      ])
+var line = d3.svg.line(),
+    axis = d3.svg.axis().orient("left"),
+    background,
+    foreground;
 
-      //.title(d => d.Mes)// responsavel pelo título
-      .margin(margin)
-      .labelMargin(labelMargin)
+var color = d3.scale.category10();
 
-      rows.forEach(function (d, i) {
-      star.includeLabels(i % 3 === 0 ? true : false);
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      var wrapper = d3.select('#target').append('span')
-        .attr('class', "wrapper" /* + d.Mes */)
-      
-      d3.selectAll("span")
-        .attr('class', function (d, i) {
-          return (i % 2 === 0 ? "pt" + i : "pt" + i)
-        }) 
+d3.csv("data.csv", function(error, data) {
 
-      /* Responsavel por cada modulo do grafico ; janeiro,   fevereiro  */
-      /* d3.selectAll("p").style("color", function (d, i) {
-        return i % 2 ? "#fff" : "#eee";
-      }); */
-      var svg = wrapper.append('svg')
-        .attr('class', 'chart')
-        .attr('width', width + margin.left + margin.right)
-        .attr('height', width + margin.top + margin.bottom)
+  // Extract the list of dimensions and create a scale for each.
+  x.domain(dimensions = d3.keys(data[0]).filter(function(d) {
+    return d != "RowID" && (y[d] = d3.scale.linear()
+        .domain(d3.extent(data, function(p) { return +p[d]; }))
+        .range([height, 0]));
+  }));
 
-      /* Aqui eu ploto os dados  */
-      var starG = svg.append('g')
-        .datum(d)
-        .call(star)
-        .call(star.interaction)
+  // Add grey background lines for context.
+  background = svg.append("g")
+      .attr("class", "background")
+    .selectAll("path")
+      .data(data)
+    .enter().append("path")
+      .attr("d", path);
 
-      /* Fazendo a interação */
-      var interactionLabel = wrapper.append('div')
-        .attr('class', 'interaction label')
+  // Add blue foreground lines for focus.
+  foreground = svg.append("g")
+      .attr("class", "foreground")
+      .selectAll("path")
+      .data(data)
+      .enter().append("path")
+      .attr({'style': function(d) {
+        return "stroke: " + color(d.Ano)
+      }}) 
+      .attr("d", path);
 
-      var circle = svg.append('circle')
-        .attr('class', 'interaction circle')
-        .attr('r', 7)
-
-      /* Responsavel pela interacao valou defaut sem as labels  */
-      var interaction = wrapper.selectAll('.interaction')
-        .style('display', 'none');
-
-      svg.selectAll('.star-interaction')
-        .on('mouseover', function (d) {
-          svg.selectAll('.star-label')
-            .style('display', 'none')
-
-          interaction
-            .style('display', 'block')
-
-          circle
-            .attr('cx', d.x)
-            .attr('cy', d.y)
-
-          $interactionLabel = $(interactionLabel.node());
-          interactionLabel
-            .text(d.key + ': ' + d.datum[d.key])
-            .style('left', d.xExtent - ($interactionLabel.width() / 2))
-            .style('top', d.yExtent - ($interactionLabel.height() / 2))
+  // Add a group element for each dimension.
+  var g = svg.selectAll(".dimension")
+      .data(dimensions)
+      .enter().append("g")
+      .attr("class", "dimension")
+      .attr("transform", function(d) { return "translate(" + x(d) + ")"; })
+      .call(d3.behavior.drag()
+      .origin(function(d) { return {x: x(d)}; })
+      .on("dragstart", function(d) {
+          dragging[d] = x(d);
+          background.attr("visibility", "hidden");
         })
-        .on('mouseout', function (d) {
-          interaction
-            .style('display', 'none')
-
-          svg.selectAll('.star-label')
-            .style('display', 'block')
+        .on("drag", function(d) {
+          dragging[d] = Math.min(width, Math.max(0, d3.event.x));
+          foreground.attr("d", path);
+          dimensions.sort(function(a, b) { return position(a) - position(b); });
+          x.domain(dimensions);
+          g.attr("transform", function(d) { return "translate(" + position(d) + ")"; })
         })
-    });
+        .on("dragend", function(d) {
+          delete dragging[d];
+          transition(d3.select(this)).attr("transform", "translate(" + x(d) + ")");
+          transition(foreground).attr("d", path);
+          background
+              .attr("d", path)
+              .transition()
+              .delay(500)
+              .duration(0)
+              .attr("visibility", null);
+        }));
+
+  // Add an axis and title.
+  g.append("g")
+      .attr("class", "axis")
+      .each(function(d) { d3.select(this).call(axis.scale(y[d])); })
+      .append("text")
+      .style("text-anchor", "middle")
+      .attr("y", -9)
+      .text(function(d) { return d; });
+
+  // Add and store a brush for each axis.
+  g.append("g")
+      .attr("class", "brush")
+      .each(function(d) {
+        d3.select(this).call(y[d].brush = d3.svg.brush().y(y[d]).on("brushstart", brushstart).on("brush", brush));
+      })
+    .selectAll("rect")
+      .attr("x", -8)
+      .attr("width", 16);
+});
+
+function position(d) {
+  var v = dragging[d];
+  return v == null ? x(d) : v;
+}
+
+function transition(g) {
+  return g.transition().duration(500);
+}
+
+// Returns the path for a given data point.
+function path(d) {
+  return line(dimensions.map(function(p) { return [position(p), y[p](d[p])]; }));
+}
+
+function brushstart() {
+  d3.event.sourceEvent.stopPropagation();
+}
+
+// Handles a brush event, toggling the display of foreground lines.
+function brush() {
+  var actives = dimensions.filter(function(p) { return !y[p].brush.empty(); }),
+      extents = actives.map(function(p) { return y[p].brush.extent(); });
+  foreground.style("display", function(d) {
+    return actives.every(function(p, i) {
+      return extents[i][0] <= d[p] && d[p] <= extents[i][1];
+    }) ? null : "none";
   });
-
-  // style display é diferente de block (é none)
-  function myFunction(c) {
-  let x = document.getElementsByClassName("chart")
-  x[c].style.display = (x[c].style.display === 'block') ? 'none' : 'block' 
-    
 }
