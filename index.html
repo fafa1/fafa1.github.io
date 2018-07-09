@@ -9,8 +9,9 @@
     </head>
 
     <body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/core.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script> -->
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="d3-css.css">
     <link rel="stylesheet" href="">
@@ -18,7 +19,7 @@
     <script src="index.js"></script>
     
     <div class="row">
-        <div class="col-xs-4 col-sm-12 col-md-12 col-lg-12" id='target'> 
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id='target'> 
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 app app--fixed-header">
                 <header class="header header--fixed">
                     <h1 class="header__title">
@@ -36,7 +37,7 @@
                     </nav> 
                 </header> 
                     <button type="button" class="btn btn-light bt0" onclick="myFunction(0)">Janeiro</button>
-                    <button type="button" class="btn btn-light bt1" onclick="myFunction(12)">Fevereiro</button>
+                    <button type="button" class="btn btn-light bt1" onclick="myFunction(1)">Fevereiro</button>
                     <button type="button" class="btn btn-light bt2" onclick="myFunction(2)">Marco</button>
                     <button type="button" class="btn btn-light bt3" onclick="myFunction(3)">Abril</button>
                     <button type="button" class="btn btn-light bt4" onclick="myFunction(4)">Maio</button>
